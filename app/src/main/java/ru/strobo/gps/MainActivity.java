@@ -1,8 +1,8 @@
 package ru.strobo.gps;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClickStart(View v) {
         //textView.setText("start");
         startService(new Intent(this, LocationService.class));
+        //startService(new Intent(this, WebSocketService.class));
 
         info.setText( info.getText().toString() + "\n" + "Служба активна");
 
@@ -47,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
     public void onClickStop(View v) {
         //textView.setText("stop");
         stopService(new Intent(this, LocationService.class));
+        //stopService(new Intent(this, WebSocketService.class));
 
-        info.setText( info.getText().toString() + "\n" + "Служба не активна");
+        info.setText( "Служба не активна");
     }
 
     public void onClickExit(View v) {

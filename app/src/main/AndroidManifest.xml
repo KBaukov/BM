@@ -21,8 +21,14 @@
             android:name=".services.LocationService"
             android:enabled="true"
             android:exported="true">
-
         </service>
+
+        <service
+            android:name=".services.WebSocketService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
