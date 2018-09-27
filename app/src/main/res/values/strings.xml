@@ -1,6 +1,12 @@
 <resources>
-    <string name="app_name">GPS_tracker</string>
+    <string name="app_name">Baby GPS Monitor</string>
     <string name="start">Start service</string>
     <string name="stop">Stop service</string>
-    <string name="exit">EXIT</string>
+    <string name="exit">SAVE and EXIT</string>
+    <string name="hintHost">Введите URL сервера</string>
+    <string name="hintPort">Введите порт сервера</string>
+    <string name="hintDev">Введите Device ID</string>
+    <string name="host">Host</string>
+    <string name="port">Port</string>
+    <string name="dId">Device ID</string>
 </resources>

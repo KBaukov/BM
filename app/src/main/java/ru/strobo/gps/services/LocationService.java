@@ -1,4 +1,4 @@
-package ru.strobo.gps;
+package ru.strobo.gps.services;
 
 import android.app.Service;
 import android.content.Context;
@@ -10,14 +10,26 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-public class BmService extends Service {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import ru.strobo.gps.data.BmDbHelper;
+import ru.strobo.gps.data.ent.Point;
+
+public class LocationService extends Service {
 
     private static final String TAG = "BMTESTGPS";
     private LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 1000;
     private static final float LOCATION_DISTANCE = 10f;
 
-    public BmService() {}
+    private String devID;
+    private BmDbHelper db;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    //private Context cntx;
+
+    public LocationService() { }
 
 
     private class LocationListener implements android.location.LocationListener{
@@ -27,15 +39,24 @@ public class BmService extends Service {
         public LocationListener(String provider)
         {
             Log.e(TAG, "LocationListener " + provider);
-            //Toast.makeText(this, "LocationListener "+ provider, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(cntx, "LocationListener "+ provider, Toast.LENGTH_SHORT).show();
             mLastLocation = new Location(provider);
         }
         @Override
         public void onLocationChanged(Location location)
         {
             Log.e(TAG, "onLocationChanged: " + location);
-
-            //Toast.makeText(this, "onLocationChanged: " + location, Toast.LENGTH_SHORT).show();
+            Double lat = location.getLatitude();
+            Double lon = location.getLongitude();
+            String loc = lat.toString()+"," +lon.toString();
+            showMsg(loc);
+            db.setPoint(
+                    new Point(
+                            sdf.format(new Date()),
+                            loc,
+                            0
+                    )
+            );
             mLastLocation.set(location);
         }
         @Override
@@ -92,6 +113,10 @@ public class BmService extends Service {
         } catch (IllegalArgumentException ex) {
             Log.d(TAG, "gps provider does not exist " + ex.getMessage());
         }
+
+        db = new BmDbHelper(this);
+        devID = db.getConfig().getDevId();
+
     }
     @Override
     public void onDestroy() {
@@ -114,6 +139,11 @@ public class BmService extends Service {
         if (mLocationManager == null) {
             mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         }
+    }
+
+    private void showMsg(String msg) {
+        Toast.makeText(this, msg,
+                Toast.LENGTH_SHORT).show();
     }
 
 
